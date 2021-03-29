@@ -22,6 +22,7 @@ Let's say have a GET `/demo-file-download` end point and we want to return a `de
 ```
 
 **(1)** We are returning a byte array response in response to ```GET /demo-file-download```
+
 **(2)** This is dummy dynamic content, this could be records from db or some calculated data.
 
 We need to set appropriate headers so that browser can handle response properly:
@@ -38,6 +39,7 @@ We need to set appropriate headers so that browser can handle response properly:
 ```
 
 **(3)** We are setting header `Content-Type: application/octet-stream`. This will set MIME type `application/octet-stream` to indicate response contains binary.
+
 **(4)** We are also setting header `Content-Disposition: attachment; filename="demo-file.txt"`. This will indicate browser that response is an attachment and it should be saved as `demo-file.txt`
 
 Finally, we can send content as bytes in response, the complete controller implementation would look like:
