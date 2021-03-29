@@ -7,7 +7,9 @@ excerpt: "How to download file from spring controller"
 category: "java-spring-framework"
 ---
 
-There are situations when we need to return a downloadable file from a controller method, for example we might need to return a dynamic pdf generated from db records, or some csv containing records or some processed image etc. This article will explain how to download a file from a spring controller method.
+There are situations when we need to return a downloadable file from a controller method, for example we might need to return a dynamic pdf generated from db records, or some csv containing records or some processed image etc. 
+
+To return a file from spring controller, you just need to return bytes with appropriate headers. This article will explain how to download a file from a spring controller method.
 
 Let's say have a GET `/demo-file-download` end point and we want to return a `demo-file.txt` with dynamically created content. Our controller method will look like:
 
@@ -19,14 +21,14 @@ Let's say have a GET `/demo-file-download` end point and we want to return a `de
     }
 ```
 
-1. We are returning a byte array response in response to ```GET /demo-file-download```
-2. This is dummy dynamic content, this could be records from db or some calculated data.
+**(1)** We are returning a byte array response in response to ```GET /demo-file-download```
+**(2)** This is dummy dynamic content, this could be records from db or some calculated data.
 
 We need to set appropriate headers so that browser can handle response properly:
 
 ```java
     @GetMapping(value = "/demo-file-download")
-    public ResponseEntity<byte[]> demo() { // (1) (1) Return byte array response
+    public ResponseEntity<byte[]> demo() { // (1) Return byte array response
         String demoContent = "This is dynamically generated content in demo file"; // (2) Dynamic content
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE); // (3) Content-Type: application/octet-stream
@@ -35,8 +37,8 @@ We need to set appropriate headers so that browser can handle response properly:
     }
 ```
 
-3. We are setting header `Content-Type: application/octet-stream`. This will set MIME type `application/octet-stream` to indicate response contains binary.
-4. We are also setting header `Content-Disposition: attachment; filename="demo-file.txt"`. This will indicate browser that response is an attachment and it should be saved as `demo-file.txt`
+**(3)** We are setting header `Content-Type: application/octet-stream`. This will set MIME type `application/octet-stream` to indicate response contains binary.
+**(4)** We are also setting header `Content-Disposition: attachment; filename="demo-file.txt"`. This will indicate browser that response is an attachment and it should be saved as `demo-file.txt`
 
 Finally, we can send content as bytes in response, the complete controller implementation would look like:
 
@@ -62,6 +64,6 @@ public class DemoController {
 }
 ```
 
-4. ```demoContent.getBytes()``` will return ```byte[]```. The method will return bytes with http headers for browser to download file.
+**(5)** ```demoContent.getBytes()``` will return ```byte[]```. The method will return bytes with http headers for browser to download file.
 
 Run the application, hit `http://localhost:8080/demo-file-download` in browser, `demo-file.txt` will be downloaded automatically with dummy content in it.
